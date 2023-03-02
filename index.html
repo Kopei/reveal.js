@@ -1,45 +1,72 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+	<title>reveal.js</title>
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
+	<link rel="stylesheet" href="dist/reset.css">
+	<link rel="stylesheet" href="dist/reveal.css">
+	<link rel="stylesheet" href="dist/theme/black.css">
 
-		<section data-markdown="2017-11-13-Aliyun-Mysql.md"  
-         data-separator="^\n\n"  
-         data-separator-vertical="^\n\n"  
-         data-separator-notes="^Note:">
-		</section>  
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="plugin/highlight/monokai.css">
+</head>
 
-			</div>
+<body>
+	<div class="reveal">
+		<div class="slides">
+
+			<section data-markdown="markdown/2023-03-02-Health-data-security.md" data-separator="^\n\n"
+				data-separator-vertical="^\n\n\n" data-separator-notes="^Note:">
+			</section>
 		</div>
+	</div>
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script src="node_modules/pdfjs-dist/build/pdf.js"></script>
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+	<script>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+			hash: true,
+
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+		});
+	</script>
+	<script>
+		// Load the PDF
+		pdfjsLib.getDocument('pdf/GBT39725-2020.pdf').promise.then(function (pdf) {
+			// Load the first page
+			renderedPage = 1;
+			var pdfContainer = document.getElementById('pdf-container');
+			for (var pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+				pdf.getPage(pageNumber).then(function (page) {
+					var scale = 1.5;
+					var viewport = page.getViewport({ scale: scale });
+					var canvas = document.createElement('canvas');
+					var context = canvas.getContext('2d');
+					canvas.height = viewport.height;
+					canvas.width = viewport.width;
+					var renderContext = {
+						canvasContext: context,
+						viewport: viewport
+					};
+					console.log(pdf.numPages, pageNumber)
+					page.render(renderContext)
+					pdfContainer.appendChild(canvas);
+				});
+			}
+		});
+	</script>
+</body>
+
 </html>
