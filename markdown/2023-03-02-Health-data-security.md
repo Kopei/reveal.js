@@ -14,4 +14,9 @@ To have premilinary share of health data security knowledge so as to have basic 
 
 
 ### Exercise
+Consider Surgical cloud system view, what data security measures should be taken?
 
+<img src="images/zsc-arch.png" class="r-stretch">
+
+
+### Q&A
